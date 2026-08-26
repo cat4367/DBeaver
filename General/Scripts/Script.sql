@@ -209,3 +209,162 @@ from 학생
 group by 학년
 having count(*) >= 2		-- where 에서 실행시 count(*)이 시행된게 아니라 사용할수 없음
 order by 학년 asc;
+
+use test;
+
+select 개설학과 학과, sum(시수)
+from 과목
+group by 개설학과;
+
+select 학년, 성별, avg(나이)
+from 학생
+where 소속학과 = '컴퓨터'
+group by 학년, 성별
+having avg(나이) >= 25
+order by 학년, 성별;
+
+-- like 연산자 : 문자열의 일부분을 검색 (where에서 사용)
+-- 와일드카드 문자 : % , _ (어떤글자든 올 수가 있다)
+-- % : 글자수 상관 x		%정 (~정 [까지]) , 정% ([부터] 정~ )  * %정% ('정'이 포함되어있는것) 
+-- _ : _갯수 만큼 글자수 지정		ex) 정 _ _ 뒤에 두글자 자리도 고정
+select *
+from 학생
+where 이름 like '이%';
+
+select 이름, 주소, 학년
+from 학생
+where 주소 like '%서울%'
+order by 학년 desc;
+
+-- null값 검색시 'is'를 사용하여 조건, 아닌건 is not null
+select *
+from 학생
+where 나이 is null or 휴대폰번호 is null;
+
+-- 집합연산자 UNION(합집합)*중복제거   UNION ALL *중복가능
+select 학번
+from 학생
+where 학년 = 4
+union all
+select 학번
+from 수강
+where 평가학점 = 'a';
+
+select *
+from 학생
+where 소속학과 in ('컴퓨터','통계');
+
+select *
+from 학생
+where 학번 in (select 학번 from 수강 where 평가학점 = 'a');
+
+select 이름
+from 학생
+where exists (select* from 수강 where 수강.학번 = 학생.학번 and 과목번호 = 'c002');		-- 테이블.조회 .(기능)
+-- 이름을 구하는데 수강T 학생T 동시에 포함된 학번을 이용하고, 수강T의 해당 과목번호를 이용해서 구하는 방법
+
+-- JOIN 사용 (대체적으로 프라이머리 키 값 사용)
+select *
+from 학생, 수강, 과목
+where 학생.학번 = 수강.학번 and 수강.과목번호 = 과목.과목번호;
+
+-- 조인 1번 방법
+-- 장점 : 간단하고 사용하기 쉽다.
+-- 단점 : inner/outer인지 조절이 어렵다
+select *
+from 학생, 수강
+where 학생.학번 = 수강.학번;
+
+-- 조인 2번 방법
+-- 장점 : 나가 하고싶은 조인을 조절할 수 있다. 가독성이 좋다.
+-- 단점 : 복잡하다
+select *
+from 학생 inner join 수강
+on 학생.학번 = 수강.학번;
+
+
+select 학생.이름, 과목.이름, 평가학점
+from 학생
+	join 수강
+	join 과목 
+	on 학생.학번 = 수강.학번 
+	and 수강.과목번호 = 과목.과목번호;
+
+-- 해당 select문 안에서만 유용하며, 변경된후 변경전 이름은 사용할 수 없다
+select stu.이름, sub.이름, 평가학점
+from 학생 as stu
+	join 수강 as cls
+	join 과목 as sub
+	on stu.학번 = cls.학번 
+	and cls.과목번호 = sub.과목번호;
+
+
+select *
+from 학생 left outer join 수강			-- 기준(학생)데이터는 모두 보이되, on조건에 부합한걸 먼저 표시후 null값들을 표시
+on 학생.학번 = 수강.학번;
+
+
+use titanic;
+create table gender_submission(
+	Passenger_Id int,
+	survived int
+);
+
+create table test(
+	Passenger_Id int,
+	Pclass int,
+	Name varchar(50),
+	Sex varchar(10),
+	Age float,
+	SibSp int,
+	Parch int,
+	Ticket varchar(50),
+	Fare float,
+	Cabin varchar(50),
+	Embarked char(1)
+);
+
+create table train(
+	Passenger_Id int,
+	Survived int,
+	Pclass int,
+	Name varchar(50),
+	Sex varchar(10),
+	Age float,
+	SibSp int,
+	Parch int,
+	Ticket varchar(50),
+	Fare float,
+	Cabin varchar(50),
+	Embarked char(1)
+)
+
+select name, age, sex
+from test
+	join gender_submission as ge
+	on test.passengerid = ge.passengerid and ge.survived = 1;
+
+select sex, count(sex)
+from test
+	join gender_submission as ge
+	on test.passengerid = ge.passengerid and ge.survived = 1
+group by sex;
+
+
+select pclass, count(pclass)
+from test
+group by pclass
+order by pclass;
+
+-- 어떤 항구에서 어떤 좌석 클래스에 가족 몇명(1~2/3~4/5~6)과 온 고객의 생존률이 높았는지 
+select count(survived)
+from test
+	join gender_submission as ge
+	on test.passengerid = ge.passengerid and ge.survived = 1
+
+
+
+
+
+
+
