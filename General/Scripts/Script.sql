@@ -360,7 +360,7 @@ order by pclass;
 select count(survived)
 from test
 	join gender_submission as ge
-	on test.passengerid = ge.passengerid and ge.survived = 1
+	on test.passengerid = ge.passengerid and ge.survived = 1;
 
 
 
