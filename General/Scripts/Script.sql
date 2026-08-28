@@ -311,7 +311,7 @@ create table gender_submission(
 );
 
 create table test(
-	Passenger_Id int,
+	PassengerId int,
 	Pclass int,
 	Name varchar(50),
 	Sex varchar(10),
@@ -325,7 +325,7 @@ create table test(
 );
 
 create table train(
-	Passenger_Id int,
+	PassengerId int,
 	Survived int,
 	Pclass int,
 	Name varchar(50),
@@ -357,14 +357,36 @@ group by pclass
 order by pclass;
 
 -- 어떤 항구에서 어떤 좌석 클래스에 가족 몇명(1~2/3~4/5~6)과 온 고객의 생존률이 높았는지 
-select count(survived)
-from test
-	join gender_submission as ge
-	on test.passengerid = ge.passengerid and ge.survived = 1;
+
+	
+
+select 과목이름 , min(점수) 최소점수, max(점수) 최대점수
+from 성적
+group by 과목이름
+having avg(점수) >= 90;
 
 
+select 학과, count(학과) '학생 수'
+from 학생
+group by 학과
+
+select *
+from 학생;
+
+select 학번, 이름, 나이
+from 학생
+where 성별 = '남' and 나이 in ( select min(나이) from 학생 where 성별 = '남');
 
 
+use test;
+create table student_list(
+	student_id char(10) not null,
+	name varchar(50) not null default '미상',
+	age int,
+	primary key (student_id, name),
+	unique (student_id)
+);
+ 
 
 
 
