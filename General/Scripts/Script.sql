@@ -380,7 +380,7 @@ where 성별 = '남' and 나이 in ( select min(나이) from 학생 where 성별
 
 use test;
 create table student_list(
-	student_id char(10) not null,
+	student_id char(101) not null,
 	name varchar(50) not null default '미상',
 	age int,
 	primary key (student_id, name),
