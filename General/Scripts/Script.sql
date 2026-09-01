@@ -387,6 +387,149 @@ create table student_list(
 	unique (student_id)
 );
  
+use test;
+select 학번, 학생.이름, 과목번호, 과목.이름
+from 학생, 과목;
+	
+-- 121 페이지 (137강의실에서 강의되는 모든 과목을 수강하는 학생의 이름)
+select 이름
+from
+(select 학번, 과목번호
+from 수강
+where 과목번호 = (
+	select 과목번호
+	from 과목
+	where 강의실=137)
+) R1 join 학생 on R1.학번 = 학생.학번;
 
+-- 121 페이지 맨아래쪽 회색박스의 3번째 줄)
+select 과목번호, 평가학점
+from (
+	select 과목번호, 평가학점, 학생.이름
+	from 학생,수강
+	where 학생.학번 = 수강.학번
+) R1
+where R1.이름='김연아';
+
+
+
+
+
+use test;
+
+create table 비상연락망 (
+	이름 varchar(50),
+	성별 char(1),
+	연락처 varchar(20) not null default '추후입력',
+	학교 varchar(50),
+	학년 int,
+	반 int,
+	번호 int,
+	주민등록번호 varchar(14),
+	primary key(주민등록번호),	-- 중복 x  null x
+	unique(학교,학년,반,번호),	-- 중복 x  null o
+	unique(이름,연락처)
+);
+
+desc 수강;					-- 테이블 내용 확인 desc
+
+insert into 비상연락망 (이름, 성별) value ('홍길동','남');
+insert into 비상연락망 (이름, 성별, 연락처) value ('홍길동','남', '010-1111-2222');
+
+use
+
+
+
+create database if not exists shop;
+use shop;
+
+create table member (
+	member_id int primary key,
+	username varchar(20) not null,
+	email varchar(50) unique ,
+	created_at datetime default CURRENT_TIMESTAMP()
+);
+
+create table products (
+	product_id int primary key,
+	product_name varchar(30) not null,
+	price int check (price >= 0),
+	stock int
+);
+
+create table orders (
+	order_id int primary key,
+	member_id int,
+	order_date datetime ,
+	foreign key(member_id) references member(member_id)
+);
+
+alter table orders modify column order_date datetime default CURRENT_TIMESTAMP();
+
+insert into member (member_id, username, email) values
+(1, '김철수', 'chulsoo@gmail.com'),
+(2, '이영희', 'younghee@naver.com'),
+(3, '박민수', 'minsu@daum.net'),
+(4, '정서연', 'seoyeon@gmail.com'),
+(5, '강도윤', 'doyun@kakao.com'),
+(6, '조지우', 'jiwoo@naver.com'),
+(7, '윤하준', 'hajun@gmail.com'),
+(8, '한서윤', 'seoyun@daum.net');
+
+insert into products (product_id, product_name, price, stock) values 
+(1, '무선 키보드', 35000, 120),
+(2, '게이밍 마우스', 25000, 80),
+(3, '27인치 모니터', 250000, 30),
+(4, 'USB-C 허브', 15000, 200),
+(5, '책상 장패드', 12000, 150),
+(6, '노트북 거치대', 22000, 90),
+(7, '블루투스 스피커', 45000, 50),
+(8, 'HD 웹캠', 60000, 40);
+
+insert into orders (order_id,member_id, order_date) values
+(1, 1, '2026-06-01 10:30:00'),
+(2, 2, '2026-06-01 14:15:00'),
+(3, 3, '2026-06-02 09:00:00'),
+(4, 1, '2026-06-03 11:20:00'),
+(5, 4, '2026-06-04 16:45:00'),
+(6, 5, '2026-06-05 13:10:00'),
+(7, 6, '2026-06-06 17:50:00'),
+(8, 7, '2026-06-07 08:30:00');
+
+create table 게시판(
+	게시물번호 int not null auto_increment primary key,		-- auto_increment 입력할때마다 숫자++ 자동입력
+	제목 varchar(50),
+	내용 text,
+	작성일 date,
+	작성자 varchar(20)
+);
+
+insert into 게시판(제목, 내용) values
+('안녕하세요 제목임','안녕하세요 나는내용임');
+
+delete from 게시판 where 게시물번호 in(5,6,7,10,11);			-- 해당 행이 사라져도 번호가 재정렬되는건 아님
+
+select *
+from products;
+
+select product_name 상품명, price 가격
+from products
+where price <= 30000;
+
+select *
+from orders
+where member_id in(1);
+
+select order_id 주문번호, username 회원명, order_date 주문일자
+from orders join member on orders.member_id = member.member_id;
+
+select username 회원명, count(*) 주문횟수
+from member join orders on member.member_id = orders.member_id
+group by username;
+
+select username 회원명, count(*) 주문횟수
+from member join orders on member.member_id = orders.member_id
+group by username
+order by 주문횟수 desc,회원명;
 
 
