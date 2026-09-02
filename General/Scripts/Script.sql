@@ -532,4 +532,50 @@ from member join orders on member.member_id = orders.member_id
 group by username
 order by 주문횟수 desc,회원명;
 
+use test;
+create table 게시판(
+	게시물번호 int not null auto_increment primary key,
+	제목 varchar(50),
+	내용 text,
+	작성일 date,
+	작성자 varchar(20)
+);
+
+alter table 게시판 add 작성일 time ;
+alter table 게시판 modify 작성일 date not null;	-- 자료형 변경 'modify' 
+alter table 게시판 change 작성일 작성일자 date;	-- 컬럼명 변경 'change'
+alter table 게시판 rename to 게시물;			-- 테이블명 변경 'rename to'
+alter table 게시판 modify 작성자 varchar(20) default '관리자';
+alter table 게시판 drop column 작성일;			-- 컬럼 삭제 'drop column'
+
+drop table 게시물;							-- 테이블 삭제 'drop table 테블명'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
