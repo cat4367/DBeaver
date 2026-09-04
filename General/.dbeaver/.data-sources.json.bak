@@ -13,7 +13,6 @@
 				"configurationType": "MANUAL",
 				"home": "mysql_client",
 				"type": "dev",
-				"closeIdleConnection": false,
 				"properties": {
 					"connectTimeout": "20000",
 					"rewriteBatchedStatements": "true",
@@ -21,30 +20,6 @@
 					"enabledTLSProtocols": "TLSv1,TLSv1.1,TLSv1.2,TLSv1.3",
 					"allowPublicKeyRetrieval": "TRUE",
 					"useSSL": "FALSE"
-				},
-				"provider-properties": {
-					"@dbeaver-show-all-dbs@": "true"
-				},
-				"auth-model": "native"
-			}
-		},
-		"mysql8-1a06a37182a-2ab6161d2e4376d9": {
-			"provider": "mysql",
-			"driver": "mysql8",
-			"name": "test",
-			"save-password": true,
-			"configuration": {
-				"host": "localhost",
-				"port": "3306",
-				"database": "test",
-				"url": "jdbc:mysql://localhost:3306/test",
-				"configurationType": "MANUAL",
-				"type": "dev",
-				"properties": {
-					"connectTimeout": "20000",
-					"rewriteBatchedStatements": "true",
-					"enabledTLSProtocols": "TLSv1,TLSv1.1,TLSv1.2,TLSv1.3",
-					"allowPublicKeyRetrieval": "true"
 				},
 				"provider-properties": {
 					"@dbeaver-show-all-dbs@": "true"
