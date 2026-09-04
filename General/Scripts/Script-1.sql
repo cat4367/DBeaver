@@ -13,15 +13,17 @@ create table 회원(
 	활동여부 char(1) not null,
 	탈퇴날짜 date
 );
+alter table 회원 modify 주소 varchar(200);
 create table 상품(
 	상품번호 char(7) not null primary key,
 	상품명 varchar(30) not null,
 	가격 int,
-	재고 int,
+	재고 int default 0,
 	판매자 varchar(20) not null,
 	판매자연락처 varchar(15),
 	노출여부 char(1)
 );
+alter table 상품 modify 재고 int default 0;
 create table 구매내역(
 	구매번호 char(7) not null,
 	상품번호 char(7),
@@ -98,6 +100,7 @@ update 상품 set 재고 = 0, 노출여부 = 'n';
 delete from 구매내역 where 구매번호 = 'S000005'; 
 
 -- 8) 회원정보 삭제 요청 상황 => 4번째로 입력했던 회원의 정보 삭제
+delete from 구매내역 where 구매자아이디 = 'user04';
 delete from 회원 where 아이디 = 'user04';
 
 
@@ -125,5 +128,53 @@ from 회원
 where 활동여부 = 'y'
 group by 나이대
 having count(*) >= 1;
+
+create user user1 identified by 'user123';
+create user 'user2'@'localhost' identified by 'user222';
+create user 'user3'@'127.1.1.1' identified by 'user333';
+create user 'user4'@'192.168.0.147' identified by 'user444';		-- 해당 ip에서만 접근 가능
+
+select host, user from mysql.user;
+
+-- 권한 부여 : GRANT (grant ~~ on ~~ to)
+grant insert,update,delete,select on practice.* to 'user1'@'%';
+grant select on test.학생 to 'user2'@'localhost';
+grant all on *.* to 'user3'@'127.1.1.1';
+grant all on *.* to 'user4'@'192.168.0.147' with grant option;
+
+show grants; -- 전체 권한 보기
+show grants for 'user1';
+
+-- 권한 회수 : REVOKE (revoke ~~ on ~~ from)
+revoke delete on practice.* from 'user1'@'%';
+
+-- 계정 삭제 : DROP USER
+drop user 'user3'@'127.1.1.1';
+
+create view 회원관리뷰 (회원명, 회원아이디)
+as select 이름,아이디 from 회원 where 성별='f';
+
+show tables;
+
+select *
+from 회원관리뷰
+where 회원명 = '이서연';
+
+drop view 회원관리뷰;
+
+create view v_set (이름, 상품이름, 구매한수량)
+as select 이름, 상품명, count(*)
+from 구매내역 join 회원 on 구매내역.구매자아이디 = 회원.아이디
+			join 상품	on 구매내역.상품번호 = 상품.상품번호
+group by 구매번호 as ;
+
+show tables;
+
+
+
+
+
+
+
 
 
