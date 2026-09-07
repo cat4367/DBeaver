@@ -170,10 +170,40 @@ group by 구매번호 as ;
 
 show tables;
 
+use practice;
+show index from 회원;
+
+use test;
+create index idx_수강 on 수강(학번, 과목번호);
+create unique index idx_과목 on 과목(이름 asc);
+
+drop index idx_수강 on 수강;			-- 인덱스 삭제
+alter table 과목 drop index idx_과목;	-- 테이블 구조변경 : 인덱스 삭제
+
+use practice;
+
+select SUBSTRING('안녕하세요? 지금은 9시 50분입니다.', 4, 5)		-- 4번째 글자 부터 5글자만 가져옴
+from dual;
+
+select replace('Hello world.I like Java!','l','v')		-- 문자열중 'l'을 찾아서 'v'로 바꿈
+from dual;
+
+-- 2026-09-07 09:55:48
+select SYSDATE() from dual;
+select now() from dual;
+
+-- 2026-09-07
+select CURRENT_DATE() from dual;
+
+-- 09:56:24
+select CURRENT_TIME() from dual;
 
 
+select date_add('2026-9-7', interval 100 day) from dual;		-- 100일 후 날짜 구하기
+select date_sub('2026-12-31', interval 100 day) from dual;		-- 100일 전 날짜 구하기
 
-
+select DATE_FORMAT('2026-9-7','%y년 %m월 %d일') from dual;
+-- 26년 09월 07일
 
 
 

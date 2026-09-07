@@ -550,11 +550,58 @@ alter table 게시판 drop column 작성일;			-- 컬럼 삭제 'drop column'
 
 drop table 게시물;							-- 테이블 삭제 'drop table 테블명'
 
+select abs(+17), abs(-17);					-- '+ -'기호 빼고 보여주는 절대값 함수
+select ceil(3.14);							-- 소숫점 올림
+select floor(9.99);							-- 소숫점 내림
+
+select 학번,sum(기말성적)/count(*),round(sum(기말성적)/count(*),2)
+from 수강
+group by 학번;								-- round 소숫점 n번째 자리까지만 출력
 
 
+select length(소속학과),소속학과,right(학번,2),학번,repeat('*',나이),나이,concat(소속학과,'학과'),소속학과
+from 학생;
 
+select substring(주소,1,2), replace(substring(휴대폰번호, 5, 9), '-',',')
+from 학생;
 
+select 신청날짜, last_day(신청날짜)
+from 수강
+where year(신청날짜) = '2019';					-- 해당하는 날짜의 마지막 일 수를 보는 함수
 
+select sysdate(),datediff(신청날짜,'2019-01-01'), 신청날짜
+from 수강;									-- sysdate = 시스템상 시간 , datediff(끝나는날,시작날) = (끝나는날 - 시작날)
+
+select 신청날짜, date_format(신청날짜, '%b/%d/%y'),date_format(신청날짜, '%Y년%c월%e일')
+from 수강;
+
+delimiter //
+
+create procedure insertorupdatecourse(
+	in CourseNo varchar(4),
+	in CourseName varchar(20),
+	in CourseRoom char(3),
+	in CourseDept varchar(20),
+	in CourseCredit int
+)
+begin
+	declare Count int;											-- declare 변수선언
+	select count(*) into Count from 과목 where 과목번호 = CourseNo;
+	if (Count = 0) then
+		insert into 과목(과목번호, 이름, 강의실, 개설학과, 시수)
+		values(CourseNo, CourseName, CourseRoom, CourseDept, CourseCredit);
+	else
+		update 과목
+		set 이름 = CourseName, 강의실 = CourseRoom, 개설학과 = CourseDept, 시수 = CourseCredit
+		where 과목번호 = CourseNo;
+	end if;
+end //
+delimiter ;
+
+call insertorupdatecourse('c006','연극학개론','310','교양학부',2);	-- 없는 행이면 정보 입력하고, 이미 있는데이터면 'update'해서 수정 
+
+select *
+from 과목;
 
 
 
