@@ -1,1 +1,1 @@
-{"resources":{"Scripts/Script-1.sql":{"default-datasource":"mysql8-1a031696de8-8295cbf3dc744b6","default-catalog":"test"},"Scripts/Script-2.sql":{"default-datasource":"mysql8-1a06a37182a-2ab6161d2e4376d9"},"Scripts/Script.sql":{"default-datasource":"mysql8-1a031696de8-8295cbf3dc744b6","default-catalog":"test"}}}
+{"resources":{"Scripts/Script-1.sql":{"default-datasource":"mysql8-1a031696de8-8295cbf3dc744b6","default-catalog":"test"},"Scripts/Script.sql":{"default-datasource":"mysql8-1a031696de8-8295cbf3dc744b6","default-catalog":"test"}}}
