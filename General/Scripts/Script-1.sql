@@ -206,5 +206,35 @@ select DATE_FORMAT('2026-9-7','%y년 %m월 %d일') from dual;
 -- 26년 09월 07일
 
 
+create database simple_test;
+use simple_test;
+create table guestbook(
+	id int,
+	writer varchar(20) not null,
+	content varchar(500) not null,
+	reg_date date default (current_date),
+	primary key(id)
+);
+
+insert into guestbook values(1,'홍길동','오늘은 아무 일도 없었다.','2026-09-10');
+insert into guestbook values(2,'김영희','데이터 베이스 연습하는날','2026-09-09');
+
+select *
+from guestbook
+order by id asc;
+
+alter table guestbook modify id int auto_increment;
+alter table guestbook modify reg_date datetime default current_timestamp;
+
+insert into guestbook (writer, content) values ('정형민','집에 일찍가면 행복할거야');
+insert into guestbook (writer, content) values ('김자바','데이터베이스랑 자바랑 할게 많아');
+
+select *
+from guestbook
+order by id desc;
+
+
+
+
 
 
